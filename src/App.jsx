@@ -20,9 +20,11 @@ function App() {
   });
 
   useEffect(() => {
-    convert(state).then((data) => {
-      setResult(data.result);
-    });
+    if (state.amount) {
+      convert(state).then((data) => {
+        setResult(data.result);
+      });
+    }
   }, [state]);
 
   const handleChange = (event) => {
