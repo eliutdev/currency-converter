@@ -4,6 +4,8 @@ import symbols from "../symbols.json";
 
 import { convert } from "exchangerate-javascript-sdk";
 
+import CurrencySelector from "./components/CurrencySelector";
+
 function App() {
   const [state, setState] = useState({
     amount: 0,
@@ -52,27 +54,21 @@ function App() {
         </div>
         <div className="control">
           <label>From</label>
-          <select name="from" value={state.from} onChange={handleChange}>
-            {Object.keys(symbolsData).map((code) => {
-              return (
-                <option key={code} value={code}>
-                  {code} - {symbolsData[code]}
-                </option>
-              );
-            })}
-          </select>
+          <CurrencySelector
+            name="from"
+            value={state.from}
+            symbols={symbolsData}
+            onChange={handleChange}
+          />
         </div>
         <div className="control">
           <label>To</label>
-          <select name="to" value={state.to} onChange={handleChange}>
-            {Object.keys(symbolsData).map((code) => {
-              return (
-                <option key={code} value={code}>
-                  {code} - {symbolsData[code]}
-                </option>
-              );
-            })}
-          </select>
+          <CurrencySelector
+            name="to"
+            value={state.to}
+            symbols={symbolsData}
+            onChange={handleChange}
+          />
         </div>
         <input type="submit" value="Convert" />
       </form>
