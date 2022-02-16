@@ -7,10 +7,12 @@ import { convert } from "exchangerate-javascript-sdk";
 import CurrencySelector from "./components/CurrencySelector";
 
 function App() {
-  const [state, setState] = useState({
-    amount: 0,
-    from: "USD",
-    to: "EUR",
+  const [state, setState] = useState(() => {
+    const params = new URLSearchParams(window.location.search);
+    const from = params.get("from") ?? "EUR";
+    const to = params.get("to") ?? "USD";
+    const amount = params.get("amount") ?? 0;
+    return { from, to, amount };
   });
 
   const [result, setResult] = useState(0);
@@ -21,6 +23,7 @@ function App() {
     if (state.amount) {
       convert(state).then((data) => {
         setResult(data.result);
+        setQueryString();
       });
     }
   }, [state]);
@@ -38,6 +41,11 @@ function App() {
     convert(state).then((data) => {
       setResult(data.result);
     });
+  };
+
+  const setQueryString = () => {
+    const { from, to, amount } = state;
+    window.history.pushState({}, "", `?from=${from}&to=${to}&amount=${amount}`);
   };
 
   return (
