@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import "./App.css";
 
 import { convert, symbols } from "exchangerate-javascript-sdk";
 
@@ -20,6 +19,12 @@ function App() {
     });
   });
 
+  useEffect(() => {
+    convert(state).then((data) => {
+      setResult(data.result);
+    });
+  }, [state]);
+
   const handleChange = (event) => {
     const { name, value } = event.target;
     setState((prevState) => ({
@@ -36,7 +41,7 @@ function App() {
   };
 
   return (
-    <div>
+    <div className="wrapper">
       <form onSubmit={handleSubmit}>
         <div className="control">
           <label>Amount</label>
@@ -75,10 +80,10 @@ function App() {
       </form>
       {result ? (
         <>
-          <div>
+          <div className="result-from">
             {state.amount} {state.from} ={" "}
           </div>
-          <div>
+          <div className="result-to">
             {result} {state.to}
           </div>
         </>
