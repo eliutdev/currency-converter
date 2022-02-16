@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 
-import { convert, symbols } from "exchangerate-javascript-sdk";
+import symbols from "../symbols.json";
+
+import { convert } from "exchangerate-javascript-sdk";
 
 function App() {
   const [state, setState] = useState({
@@ -11,13 +13,7 @@ function App() {
 
   const [result, setResult] = useState(0);
 
-  const [symbolsData, setSymbols] = useState({});
-
-  useEffect(() => {
-    symbols().then((data) => {
-      setSymbols(data.symbols);
-    });
-  });
+  const [symbolsData] = useState(symbols);
 
   useEffect(() => {
     if (state.amount) {
@@ -57,10 +53,10 @@ function App() {
         <div className="control">
           <label>From</label>
           <select name="from" value={state.from} onChange={handleChange}>
-            {Object.values(symbolsData).map(({ description, code }) => {
+            {Object.keys(symbolsData).map((code) => {
               return (
                 <option key={code} value={code}>
-                  {code} - {description}
+                  {code} - {symbolsData[code]}
                 </option>
               );
             })}
@@ -69,10 +65,10 @@ function App() {
         <div className="control">
           <label>To</label>
           <select name="to" value={state.to} onChange={handleChange}>
-            {Object.values(symbolsData).map(({ description, code }) => {
+            {Object.keys(symbolsData).map((code) => {
               return (
                 <option key={code} value={code}>
-                  {code} - {description}
+                  {code} - {symbolsData[code]}
                 </option>
               );
             })}
