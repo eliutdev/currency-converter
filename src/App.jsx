@@ -48,8 +48,28 @@ function App() {
     window.history.pushState({}, "", `?from=${from}&to=${to}&amount=${amount}`);
   };
 
+  const share = async () => {
+    const shareData = {
+      title: "Currency Converter",
+      text: `${state.amount} ${state.from} = ${result} ${state.to}`,
+      url: window.location.href,
+    };
+    try {
+      await navigator.share(shareData);
+    } catch (err) {
+      console.err(err);
+    }
+  };
+
   return (
     <div className="wrapper">
+      <h1
+        style={{
+          marginTop: 0,
+        }}
+      >
+        Currency Converter
+      </h1>
       <form onSubmit={handleSubmit}>
         <div className="control">
           <label>Amount</label>
@@ -78,7 +98,16 @@ function App() {
             onChange={handleChange}
           />
         </div>
-        <input type="submit" value="Convert" />
+        <input type="submit" className="btn btn--primary" value="Convert" />
+        {result ? (
+          <button
+            type="button"
+            className="btn btn--outline-primary"
+            onClick={share}
+          >
+            Share
+          </button>
+        ) : null}
       </form>
       {result ? (
         <>
